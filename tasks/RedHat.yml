@@ -1,0 +1,33 @@
+---
+## Install WireGuard prerequests for CentOS/RHEL 7
+
+- name: Upgrade system packages on CentOS/RHEL
+  yum:
+    name: "*"
+    state: latest
+    update_cache: yes
+  when: ansible_os_family == 'RedHat'
+
+
+- name : Add Extra Packages for Enterprise Linux (EPEL) repository
+  package:
+    name: epel-release
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
+
+- name : Install kernel headers on CentOS/RHEL
+  package:
+    name: kernel-devel
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
+
+- name: Add WireGuard repository to CentOS/RHEL 7
+  get_url:
+    url: "{{ wireguard_repo }}"
+    dest: /etc/yum.repos.d/wireguard.repo
+  when: ansible_os_family == 'RedHat'
+
+
+# vim: set ft=ansible ts=2 sw=2 tw=0 et :
